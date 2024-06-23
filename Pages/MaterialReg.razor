@@ -1,0 +1,64 @@
+﻿@page "/MaterialReg"
+@inject MaterialDbContext _db
+@using LearnWeb_task_blazor.Data;
+@using LearnWeb_task_blazor.Models
+
+@inject NavigationManager NavigationManager
+
+
+<h3>Material Registration</h3>
+
+
+<EditForm Model="@materialModel" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="MaterialName">Material Name:</label>
+        <InputText id="MaterialName" class="form-control" @bind-Value="materialModel.MaterialName" />
+    </div>
+
+    <div class="form-group">
+        <label for="MaterialUniqueName">Material Unique Name:</label>
+        <InputText id="MaterialUniqueName" class="form-control" @bind-Value="materialModel.MaterialUniqueName" />
+    </div>
+
+    <div class="form-group">
+        <label for="MaterialType">Material Type:</label>
+        <InputText id="MaterialType" class="form-control" @bind-Value="materialModel.MaterialType" />
+    </div>
+
+    <div class="form-group">
+        <label for="MaterialUse">Material Use:</label>
+        <InputText id="MaterialUse" class="form-control" @bind-Value="materialModel.MaterialUse" />
+    </div>
+
+    <div class="form-group">
+        <label for="Region">Region:</label>
+        <InputText id="Region" class="form-control" @bind-Value="materialModel.Region" />
+    </div>
+    <br />
+
+   
+   
+    <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+
+</EditForm>
+
+@code
+ {
+    private Material materialModel = new Material();
+
+    private async Task HandleValidSubmit()
+    {
+        _db.Material.Add(materialModel);
+        await _db.SaveChangesAsync();        
+
+        materialModel = new Material();
+
+        // Navigate to success page
+        NavigationManager.NavigateTo("/success", forceLoad: true);
+    }
+}

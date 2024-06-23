@@ -1,0 +1,53 @@
+﻿@page "/fetchdata"
+
+@inject MaterialDbContext _db
+@using LearnWeb_task_blazor.Data;
+@using LearnWeb_task_blazor.Models
+
+
+<PageTitle>Material Display</PageTitle>
+
+<h1>Material Display</h1>
+
+<p>This component demonstrates fetching data from database.</p>
+
+@if (!materialList.Any())
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Use</th>
+                <th>Unique ID</th>
+                <th>Region</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var materialItem in materialList)
+            {
+                <tr>
+                    <td>@materialItem.MaterialName</td>
+                    <td>@materialItem.MaterialType</td>
+                    <td>@materialItem.MaterialUse</td>
+                    <td>@materialItem.MaterialUniqueName</td>
+                    <td>@materialItem.Region</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private List<Material>? materialList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        materialList =  _db.Material.Select(x => x).ToList();
+        StateHasChanged();
+    }
+}
